@@ -1,6 +1,7 @@
 import { main } from "./controllers/controllers";
 import { encontrarTarea } from "./utils/encontrarTarea";
 import { editarTarea } from "./utils/editarTarea";
+import { agregarTarea } from "./utils/agregarTarea";
 const argumentos = process.argv
 const accion = argumentos[2]
 let titulo = argumentos[3]
@@ -37,10 +38,6 @@ let lista = [
     "completada": true
   }
 ]
-
-const agregarTarea = "probando el addtasks..."
-
-
 
 switch (accion) {
   case "info":
