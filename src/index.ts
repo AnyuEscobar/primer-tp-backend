@@ -1,7 +1,10 @@
 import { main } from "./controllers/controllers";
 import { encontrarTarea } from "./utils/encontrarTarea";
+import { editarTarea } from "./utils/editarTarea";
 const argumentos = process.argv
 const accion = argumentos[2]
+let titulo = argumentos[3]
+
 let lista = [
   {
     "id": 1,
@@ -36,8 +39,6 @@ let lista = [
 ]
 
 const agregarTarea = "probando el addtasks..."
-const editarTarea = "probando el edit..."
-const borrarTarea = "probando el delete..."
 
 
 
@@ -66,14 +67,37 @@ switch (accion) {
       console.log(tareaEncontrada)
     }
     break;
+  case "editarTarea":
+    const nuevoTitulo = argumentos[4];
+    const nuevaDescripcion = argumentos[5];
+
+    if (!titulo) {
+      console.log("Debes ingresar el título de la tarea que querés editar.");
+      break;
+    }
+
+    editarTarea(lista, titulo, nuevoTitulo, nuevaDescripcion);
+    break;
   case "agregarTarea":
     console.log(agregarTarea)
     break;
-  case "editarTarea":
-    console.log(editarTarea)
-    break;
-  case "deleteTask":
-    console.log(borrarTarea)
+  case "borrarTarea":
+
+    if (!titulo) {
+      console.log("Debes ingresar un titulo válido para borrar el registro")
+      break
+    }
+
+    const indice = lista.findIndex((t) => t.titulo.toLowerCase() === titulo.toLowerCase())
+
+
+    if (indice === -1) {
+      console.log("La tarea no se encuentra en nuestra base de datos")
+      break
+    }
+
+    const tareaBorrada = lista.splice(indice, 1)
+    console.log(tareaBorrada[0])
     break;
 
 }
