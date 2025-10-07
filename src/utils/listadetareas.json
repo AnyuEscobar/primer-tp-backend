@@ -1,0 +1,32 @@
+[
+  {
+    "id": 1,
+    "titulo": "Comprar víveres",
+    "descripcion": "Leche, huevos, pan y frutas",
+    "completada": false
+  },
+  {
+    "id": 2,
+    "titulo": "Terminar informe del proyecto",
+    "descripcion": "Completar la sección final y revisar el formato",
+    "completada": false
+  },
+  {
+    "id": 3,
+    "titulo": "Llamar a mamá",
+    "descripcion": "Preguntar cómo está y planear la visita del fin de semana",
+    "completada": true
+  },
+  {
+    "id": 4,
+    "titulo": "Limpiar la cocina",
+    "descripcion": "Lavar los platos y limpiar las mesadas",
+    "completada": false
+  },
+  {
+    "id": 5,
+    "titulo": "Salir a caminar",
+    "descripcion": "Dar una caminata de 30 minutos después de cenar",
+    "completada": true
+  }
+]
