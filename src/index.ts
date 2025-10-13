@@ -9,7 +9,14 @@ const argumentos = process.argv;
 const accion = argumentos[2];
 const titulo: any = argumentos[3];
 
-let lista = readDb()
+interface Tarea {
+  id: string;
+  titulo: string;
+  descripcion: string;
+  completada: boolean;
+}
+let lista: Tarea[] = readDb() as Tarea[];
+
 
 switch (accion) {
   case "info":
@@ -55,24 +62,9 @@ switch (accion) {
     break;
 
   case "agregarTarea":
-    const desc = argumentos[4];
-
-    if (!titulo || !desc) {
-      console.log("Debes ingresar el título y la descripción de la tarea que quieres agregar.");
-      break;
-    }
-
-    const nuevaTarea = {
-      id: crypto.randomUUID(),
-      titulo: titulo,
-      descripcion: desc,
-      completada: false
-    };
-
-    lista.push(nuevaTarea);
-    console.log("Nueva tarea creada:", nuevaTarea);
+    const descripcion = argumentos[4]
+    agregarTarea(lista, titulo, descripcion)
     break;
-
   case "borrarTarea":
 
     if (!titulo) {
@@ -80,7 +72,7 @@ switch (accion) {
       break
     }
 
-    const indice = lista.findIndex((titulo) => t.titulo.toLowerCase() === titulo.toLowerCase())
+    const indice = lista.findIndex((t) => t.titulo.toLowerCase() === titulo.toLowerCase())
 
 
     if (indice === -1) {
