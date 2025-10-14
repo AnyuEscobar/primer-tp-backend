@@ -4,6 +4,6 @@ import { main } from "./controllers/controllers";
 
 const argumentos = process.argv;
 const accion = argumentos[2];
-const titulo: any = argumentos[3];
+const titulo: string = argumentos[3];
 
 main(argumentos, accion, titulo)

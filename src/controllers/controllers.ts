@@ -16,7 +16,7 @@ const connectDB = async (URI: string) => {
 
 const argumentos = process.argv
 const accion = argumentos[2]
-const lista = "lista de tareas"
+const lista = "lista"
 const titulo = argumentos[3]
 const descripcion = argumentos[4]
 
@@ -35,7 +35,7 @@ const TareaSchema = new Schema<ITarea>({
 
 const Tarea = mongoose.model<ITarea>("Tarea", TareaSchema)
 
-const main = async (argumentos: string[], accion: string, titulo: any[]) => {
+const main = async (argumentos: string[], accion: string, titulo: string) => {
   await connectDB(URI_DB)
 
   switch (accion) {
@@ -70,6 +70,22 @@ const main = async (argumentos: string[], accion: string, titulo: any[]) => {
         console.log("Debes ingresar el título de la tarea que querés editar.");
         break;
       }
+
+      const tareaActualizada = await Tarea.findOneAndUpdate(
+        { titulo: titulo.toLowerCase() },
+        {
+          titulo: nuevoTitulo ? nuevoTitulo.toLowerCase() : titulo.toLowerCase(),
+          ...(nuevaDescripcion && { descripcion: nuevaDescripcion })
+        },
+        { new: true }
+      );
+
+      if (tareaActualizada) {
+        console.log("✅ Tarea actualizada:", tareaActualizada);
+      } else {
+        console.log("⚠️ No se encontró ninguna tarea con ese título.");
+      }
+
       break;
 
     case "agregarTarea":
@@ -97,6 +113,7 @@ const main = async (argumentos: string[], accion: string, titulo: any[]) => {
       break;
   }
   mongoose.connection.close();
+  process.exit(1)
 }
 
 export { main }
