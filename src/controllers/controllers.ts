@@ -18,6 +18,7 @@ const argumentos = process.argv
 const accion = argumentos[2]
 const lista = "lista de tareas"
 const titulo = argumentos[3]
+const descripcion = argumentos[4]
 
 interface ITarea {
   titulo: string,
@@ -34,7 +35,7 @@ const TareaSchema = new Schema<ITarea>({
 
 const Tarea = mongoose.model<ITarea>("Tarea", TareaSchema)
 
-const main = async (argumentos: string[], accion: string, usuarios: any[]) => {
+const main = async (argumentos: string[], accion: string, titulo: any[]) => {
   await connectDB(URI_DB)
 
   switch (accion) {
@@ -65,39 +66,38 @@ const main = async (argumentos: string[], accion: string, usuarios: any[]) => {
       const nuevoTitulo = argumentos[4];
       const nuevaDescripcion = argumentos[5];
 
-      if (!argumentos[3]) {
+      if (!titulo) {
         console.log("Debes ingresar el título de la tarea que querés editar.");
         break;
       }
-
-      editarTarea(lista, titulo, nuevoTitulo, nuevaDescripcion);
       break;
 
     case "agregarTarea":
-      const descripcion = argumentos[4]
-      agregarTarea(lista, titulo, descripcion)
+      if (!titulo || !descripcion) {
+        console.log("Debes ingresar el título y la descripción");
+        break;
+      }
+      await Tarea.create({ titulo, descripcion });
+      console.log("Tarea agregada correctamente")
       break;
     case "borrarTarea":
-
-      if (!argumentos[3]) {
-        console.log("Debes ingresar un titulo válido para borrar el registro")
-        break
+      if (!titulo) {
+        console.log("Debes agregar un título válido para borrar la tarea")
+        break;
       }
 
-      const indice = lista.findIndex((t) => t.titulo.toLowerCase() === titulo.toLowerCase())
+      //const indice = lista.findIndex((t) => t.titulo.toLowerCase() === titulo.toLowerCase())
 
-
-      if (indice === -1) {
-        console.log("La tarea no se encuentra en nuestra base de datos")
-        break
+      const tareaBorrada = await Tarea.findOneAndDelete({ titulo });
+      if (!tareaBorrada) {
+        console.log("No se encontró la tarea")
+      } else {
+        console.log("Tarea eliminada", tareaBorrada)
       }
-
-      const tareaBorrada = await Tarea.findOneAndDelete({ titulo })
-      console.log(tareaBorrada)
       break;
-
   }
+  mongoose.connection.close();
 }
 
 export { main }
-//export const Tarea = mongoose.model<ITarea>("Tarea", TareaSchema);
+//export 
